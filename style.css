@@ -1,0 +1,9 @@
+#qr-reader {
+    width: 300px;
+    margin: auto;
+  }
+  #result {
+    margin-top: 20px;
+    font-size: 18px;
+    color: green;
+  }
