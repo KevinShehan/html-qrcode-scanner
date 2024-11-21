@@ -1,16 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
     <title>QR code scanner</title>
+  </head>
+  <body>
+    <h1 style="text-align: center">QR Code Scanner</h1>
+    <div id="qr-reader"></div>
+    <div id="result">Scan result will appear here.</div>
+    <script>
+      const resultDiv = document.getElementById("result");
 
-</head>
-<body>
-    <h1 style="text-align: center;">QR Code Scanner</h1>
-  <div id="qr-reader"></div>
-  <div id="result">Scan result will appear here.</div>
-</body>
+      // Initialize the QR code scanner
+      const qrCodeScanner = new Html5Qrcode("qr-reader");
+
+      // Start scanning
+      qrCodeScanner
+        .start(
+          { facingMode: "environment" }, // Use the back camera
+          {
+            fps: 10, // Frames per second
+            qrbox: 250, // Size of scanning box (in pixels)
+          },
+          (decodedText) => {
+            // Handle the result of the QR code scan
+            resultDiv.textContent = `Scanned QR Code: ${decodedText}`;
+            qrCodeScanner.stop(); // Stop the scanner once a QR code is detected
+          },
+          (errorMessage) => {
+            // Optional: handle errors (e.g., no QR code detected)
+            console.warn(`QR code scanning error: ${errorMessage}`);
+          }
+        )
+        .catch((err) => {
+          console.error(`Failed to start QR scanner: ${err}`);
+        });
+    </script>
+  </body>
 </html>
